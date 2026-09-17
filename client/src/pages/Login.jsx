@@ -23,7 +23,11 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || err.response?.data?.message || 'Failed to sign in. Please check your credentials.');
+      if (!err.response) {
+        setError('Network error: Unable to reach the backend API. Please ensure the backend is running.');
+      } else {
+        setError(err.response?.data?.error || err.response?.data?.message || 'Invalid email or password. Please check your credentials.');
+      }
     } finally {
       setIsLoading(false);
     }
